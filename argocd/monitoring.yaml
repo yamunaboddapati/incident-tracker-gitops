@@ -21,6 +21,11 @@ spec:
           enabled: false
         kubeProxy:
           enabled: false
+        grafana:
+          admin:
+            existingSecret: grafana-admin
+            userKey: admin-user
+            passwordKey: admin-password
         prometheus:
           prometheusSpec:
             retention: 7d
