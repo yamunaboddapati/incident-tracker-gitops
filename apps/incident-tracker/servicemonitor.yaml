@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: incident-tracker
+  labels:
+    app: incident-tracker
+spec:
+  selector:
+    matchLabels:
+      app: incident-tracker
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 15s
