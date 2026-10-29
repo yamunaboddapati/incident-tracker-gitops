@@ -19,7 +19,7 @@ spec:
         runAsUser: 10001
       containers:
         - name: api
-          image: ghcr.io/yamunaboddapati/incident-tracker:1eefd1f06ee1ec6b9e6de20d02c3773e1e790ef0
+          image: ghcr.io/yamunaboddapati/incident-tracker:57865d9ee15bbb80cf9db2aa427ad600ce14c4b3
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
