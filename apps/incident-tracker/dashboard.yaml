@@ -28,7 +28,7 @@ data:
           "id": 2, "type": "timeseries", "title": "Server error ratio (5xx)",
           "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
           "datasource": {"type": "prometheus", "uid": "prometheus"},
-          "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0}, "overrides": []},
+          "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0, "max": 1}, "overrides": []},
           "targets": [{"refId": "A", "legendFormat": "5xx ratio",
             "expr": "(sum(rate(http_requests_total{namespace=\"incident-tracker\", status=~\"5..\", path!~\"/healthz|/readyz\"}[1m])) or vector(0)) / sum(rate(http_requests_total{namespace=\"incident-tracker\", path!~\"/healthz|/readyz\"}[1m]))"}]
         },
