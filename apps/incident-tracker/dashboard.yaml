@@ -1,0 +1,52 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: incident-tracker-dashboard
+  namespace: monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  incident-tracker.json: |
+    {
+      "uid": "incident-tracker-red",
+      "title": "Incident Tracker - RED",
+      "tags": ["incident-tracker"],
+      "timezone": "browser",
+      "schemaVersion": 39,
+      "refresh": "10s",
+      "time": {"from": "now-30m", "to": "now"},
+      "panels": [
+        {
+          "id": 1, "type": "timeseries", "title": "Request rate by status (excluding probes)",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "reqps"}, "overrides": []},
+          "targets": [{"refId": "A", "legendFormat": "{{status}}",
+            "expr": "sum by (status) (rate(http_requests_total{namespace=\"incident-tracker\", path!~\"/healthz|/readyz\"}[1m]))"}]
+        },
+        {
+          "id": 2, "type": "timeseries", "title": "Server error ratio (5xx)",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "percentunit", "min": 0}, "overrides": []},
+          "targets": [{"refId": "A", "legendFormat": "5xx ratio",
+            "expr": "(sum(rate(http_requests_total{namespace=\"incident-tracker\", status=~\"5..\", path!~\"/healthz|/readyz\"}[1m])) or vector(0)) / sum(rate(http_requests_total{namespace=\"incident-tracker\", path!~\"/healthz|/readyz\"}[1m]))"}]
+        },
+        {
+          "id": 3, "type": "timeseries", "title": "p95 latency by route",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "s"}, "overrides": []},
+          "targets": [{"refId": "A", "legendFormat": "{{method}} {{path}}",
+            "expr": "histogram_quantile(0.95, sum by (le, method, path) (rate(http_request_duration_seconds_bucket{namespace=\"incident-tracker\", path!~\"/healthz|/readyz\"}[1m])))"}]
+        },
+        {
+          "id": 4, "type": "stat", "title": "Available pods",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "fieldConfig": {"defaults": {"unit": "none"}, "overrides": []},
+          "targets": [{"refId": "A",
+            "expr": "sum(kube_deployment_status_replicas_available{namespace=\"incident-tracker\"})"}]
+        }
+      ]
+    }
