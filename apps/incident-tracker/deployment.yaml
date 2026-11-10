@@ -21,6 +21,9 @@ spec:
         - name: api
           image: ghcr.io/yamunaboddapati/incident-tracker:57865d9ee15bbb80cf9db2aa427ad600ce14c4b3
           imagePullPolicy: IfNotPresent
+          env:
+            - name: FAILURE_MODE
+              value: "none"
           ports:
             - name: http
               containerPort: 8000
