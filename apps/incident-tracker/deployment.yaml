@@ -19,7 +19,7 @@ spec:
         runAsUser: 10001
       containers:
         - name: api
-          image: ghcr.io/yamunaboddapati/incident-tracker:57865d9ee15bbb80cf9db2aa427ad600ce14c4b3
+          image: ghcr.io/yamunaboddapati/incident-tracker:609a2133ca9cad7d9c318e5f6e4bc94e8220885c
           imagePullPolicy: IfNotPresent
           env:
             - name: FAILURE_MODE
