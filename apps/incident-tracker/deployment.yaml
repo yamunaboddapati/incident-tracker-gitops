@@ -23,7 +23,7 @@ spec:
           imagePullPolicy: IfNotPresent
           env:
             - name: FAILURE_MODE
-              value: "errors"
+              value: "none"
           ports:
             - name: http
               containerPort: 8000
